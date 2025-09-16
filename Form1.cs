@@ -56,33 +56,25 @@ namespace Win_init
 
         private void BtnFinish_Click(object sender, EventArgs e)
         {
-            selectedBs.Clear();
-            if (checkB1.Checked) selectedBs.Add(0);
-            if (checkB2.Checked) selectedBs.Add(1);
-            if (checkB3.Checked) selectedBs.Add(2);
-
+            List<string> exeList = new List<string>();
             string baseDir = Application.StartupPath;
-            try
+            // A部分
+            switch (selectedA)
             {
-                // 运行A
-                switch (selectedA)
-                {
-                    case 0: Process.Start(Path.Combine(baseDir, "A1.exe")); break;
-                    case 1: Process.Start(Path.Combine(baseDir, "A2.exe")); break;
-                    case 2: Process.Start(Path.Combine(baseDir, "A3.exe")); break;
-                    case 3: /* 跳过 */ break;
-                }
-                // 运行B
-                foreach (var b in selectedBs)
-                {
-                    Process.Start(Path.Combine(baseDir, $"B{b + 1}.exe"));
-                }
-                MessageBox.Show("配置完成！");
+                case 0: exeList.Add(Path.Combine(baseDir, "A1.exe")); break;
+                case 1: exeList.Add(Path.Combine(baseDir, "A2.exe")); break;
+                case 2: exeList.Add(Path.Combine(baseDir, "A3.exe")); break;
+                case 3: break;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("运行程序时出错: " + ex.Message);
-            }
+            // B部分
+            if (checkB1.Checked) exeList.Add(Path.Combine(baseDir, "B1.exe"));
+            if (checkB2.Checked) exeList.Add(Path.Combine(baseDir, "B2.exe"));
+            if (checkB3.Checked) exeList.Add(Path.Combine(baseDir, "B3.exe"));
+
+            // 打开Form2并传递exeList
+            Form2 form2 = new Form2(exeList);
+            form2.Show();
+            this.Hide();
         }
     }
 }
